@@ -16,6 +16,7 @@
 
 # IMPORT PACKAGES AND MODULES
 # ///////////////////////////////////////////////////////////////
+from gui.uis.windows import main_window
 from gui.uis.windows.main_window.functions_main_window import *
 import sys
 import os
@@ -76,93 +77,99 @@ class MainWindow(QMainWindow):
         # GET BT CLICKED
         btn = SetupMainWindow.setup_btns(self)
 
-        # Remove Selection If Clicked By "btn_close_left_column"
-        if btn.objectName() != "btn_settings":
-            self.ui.left_menu.deselect_all_tab()
 
-        # Get Title Bar Btn And Reset Active         
-        top_settings = MainFunctions.get_title_bar_btn(self, "btn_top_settings")
-        top_settings.set_active(False)
-
-        # LEFT MENU
+        # TITLE BAR MENU
         # ///////////////////////////////////////////////////////////////
-        
-        # HOME BTN
+        # 打开home界面
         if btn.objectName() == "btn_home":
-            # Select Menu
+            # 选中左边栏
             self.ui.left_menu.select_only_one(btn.objectName())
-
-            # Load Page 1
+            # 加载界面
             MainFunctions.set_page(self, self.ui.load_pages.page_1)
 
-        # WIDGETS BTN
-        if btn.objectName() == "btn_widgets":
-            # Select Menu
+        # 打开第二个界面
+        if btn.objectName() == "btn_page_2":
+            # 选中左边栏
             self.ui.left_menu.select_only_one(btn.objectName())
-
-            # Load Page 2
+            # 加载界面
             MainFunctions.set_page(self, self.ui.load_pages.page_2)
-
-        # LOAD USER PAGE
-        if btn.objectName() == "btn_add_user":
-            # Select Menu
+        
+        
+        # 打开第三个界面
+        if btn.objectName() == "btn_page_3":
+            # 选中左边栏
             self.ui.left_menu.select_only_one(btn.objectName())
-
-            # Load Page 3 
+            # 加载界面
             MainFunctions.set_page(self, self.ui.load_pages.page_3)
 
-        # BOTTOM INFORMATION
-        if btn.objectName() == "btn_info":
-            # CHECK IF LEFT COLUMN IS VISIBLE
-            if not MainFunctions.left_column_is_visible(self):
-                self.ui.left_menu.select_only_one_tab(btn.objectName())
 
-                # Show / Hide
+        # 界面顶端设置按钮
+        top_btn_settings = MainFunctions.get_title_bar_btn(self, "btn_top_settings")
+
+         # 打开info界面
+        if btn.objectName() == "btn_info" or btn.objectName() == "btn_close_left_column":
+            # 取消顶部按钮选中
+            top_btn_settings.set_active(False)
+            
+            if not MainFunctions.left_column_is_visible(self):
+                # 显示/隐藏
                 MainFunctions.toggle_left_column(self)
                 self.ui.left_menu.select_only_one_tab(btn.objectName())
             else:
                 if btn.objectName() == "btn_close_left_column":
+                    # 取消选中
                     self.ui.left_menu.deselect_all_tab()
-                    # Show / Hide
-                    MainFunctions.toggle_left_column(self)
-                
-                self.ui.left_menu.select_only_one_tab(btn.objectName())
 
-            # Change Left Column Menu
+                    # 显示/隐藏
+                    MainFunctions.toggle_left_column(self)
+                    # 选中tab
+                self.ui.left_menu.select_only_one_tab(btn.objectName())
+            
             if btn.objectName() != "btn_close_left_column":
                 MainFunctions.set_left_column_menu(
-                    self, 
-                    menu = self.ui.left_column.menus.menu_2,
+                    self,
+                    menu = self.ui.left_column.menus.menu_1, # 这个menu是在left_column里面的，有单独的界面，点开info和settings可以弹出来不同的页面
                     title = "Info tab",
                     icon_path = Functions.set_svg_icon("icon_info.svg")
                 )
 
-        # SETTINGS LEFT
+
+        # 打开设置界面
         if btn.objectName() == "btn_settings" or btn.objectName() == "btn_close_left_column":
-            # CHECK IF LEFT COLUMN IS VISIBLE
+            # 取消顶部按钮选中
+            top_btn_settings.set_active(False)
+            
             if not MainFunctions.left_column_is_visible(self):
-                # Show / Hide
+                # 显示/隐藏
                 MainFunctions.toggle_left_column(self)
                 self.ui.left_menu.select_only_one_tab(btn.objectName())
             else:
                 if btn.objectName() == "btn_close_left_column":
+                    # 取消选中
                     self.ui.left_menu.deselect_all_tab()
-                    # Show / Hide
+
+                    # 显示/隐藏
                     MainFunctions.toggle_left_column(self)
+                    # 选中tab
                 self.ui.left_menu.select_only_one_tab(btn.objectName())
 
-            # Change Left Column Menu
             if btn.objectName() != "btn_close_left_column":
                 MainFunctions.set_left_column_menu(
-                    self, 
-                    menu = self.ui.left_column.menus.menu_1,
-                    title = "Settings Left Column",
+                    self,
+                    menu = self.ui.left_column.menus.menu_2,
+                    title = "Settings",
                     icon_path = Functions.set_svg_icon("icon_settings.svg")
                 )
-        
-        # TITLE BAR MENU
-        # ///////////////////////////////////////////////////////////////
-        
+
+
+
+            # # 选中左边栏
+            # self.ui.left_menu.select_only_one(btn.objectName())
+            # # 加载界面
+            # MainFunctions.set_page(self, self.ui.load_pages.page_4)
+
+
+
         # SETTINGS TITLE BAR
         if btn.objectName() == "btn_top_settings":
             # Toogle Active
@@ -177,9 +184,15 @@ class MainWindow(QMainWindow):
                 # Show / Hide
                 MainFunctions.toggle_right_column(self)
 
-            # Get Left Menu Btn            
-            top_settings = MainFunctions.get_left_menu_btn(self, "btn_settings")
-            top_settings.set_active_tab(False)            
+            # Get Left Menu Settings            
+            btn_settings = MainFunctions.get_left_menu_btn(self, "btn_settings")
+            btn_settings.set_active_tab(False)            
+
+            # Get Left Menu Info            
+            btn_info = MainFunctions.get_left_menu_btn(self, "btn_info")
+            btn_info.set_active_tab(False)
+       
+
 
         # DEBUG
         print(f"Button {btn.objectName()}, clicked!")
