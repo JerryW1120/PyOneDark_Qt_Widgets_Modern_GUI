@@ -64,7 +64,7 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_6">
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="og_pic">
                <property name="maximumSize">
                 <size>
                  <width>480</width>
@@ -80,7 +80,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_3">
+              <widget class="QPushButton" name="select_dir">
                <property name="maximumSize">
                 <size>
                  <width>480</width>
@@ -98,7 +98,7 @@
             </layout>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="fix_single">
              <property name="maximumSize">
               <size>
                <width>140</width>

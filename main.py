@@ -16,10 +16,13 @@
 
 # IMPORT PACKAGES AND MODULES
 # ///////////////////////////////////////////////////////////////
+import imp
 from gui.uis.windows import main_window
 from gui.uis.windows.main_window.functions_main_window import *
 import sys
 import os
+import cv2
+
 
 # IMPORT QT CORE
 # ///////////////////////////////////////////////////////////////
@@ -37,6 +40,11 @@ from gui.uis.windows.main_window import *
 # IMPORT PY ONE DARK WIDGETS
 # ///////////////////////////////////////////////////////////////
 from gui.widgets import *
+
+
+# 引入神经网络的模块
+# ///////////////////////////////////////////////////////////////
+from descratch import fix_single, fix_whole
 
 # ADJUST QT FONT DPI FOR HIGHT SCALE AN 4K MONITOR
 # ///////////////////////////////////////////////////////////////
@@ -64,6 +72,7 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         self.hide_grips = True # Show/Hide resize grips
         SetupMainWindow.setup_gui(self)
+        self.directory = ''
 
         # SHOW MAIN WINDOW
         # ///////////////////////////////////////////////////////////////
@@ -191,7 +200,11 @@ class MainWindow(QMainWindow):
             # Get Left Menu Info            
             btn_info = MainFunctions.get_left_menu_btn(self, "btn_info")
             btn_info.set_active_tab(False)
-       
+
+
+            # 添加的按钮逻辑
+            # 选择文件
+                   
 
 
         # DEBUG
@@ -219,6 +232,45 @@ class MainWindow(QMainWindow):
         # SET DRAG POS WINDOW
         self.dragPos = event.globalPos()
 
+    # cv 图片转换成 qt图片    
+    def cv2QPix(self, img):
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        qt_img = QImage(img.data,  # 数据源
+                                img.shape[1],  # 宽度
+                                img.shape[0],  # 高度
+                                img.shape[1] * 3,  # 行字节数
+                                QImage.Format_RGB888)
+        return QPixmap.fromImage(qt_img)
+
+    def pages_btn_clicked(self, btn_name):
+        ''' 
+            自定义按钮点击事件 
+        '''
+
+        '''1. 优化界面按钮事件 '''
+       
+        # //////////////////////////////////////////////////////////////////////////////
+        # 要记得在这里写完函数后，还需要在setup_main_window中声明这个按钮（236行左右）
+
+        # 选取文件夹的按钮操作，按下按钮后可选择相应文件夹，然后指定显示被选中文件夹的第5张图片
+        if btn_name == "select_dir":
+            self.directory = QFileDialog.getExistingDirectory(None,"选取文件夹","H:/")
+            files = os.listdir(self.directory)
+            files.sort()
+            img = cv2.imread(os.path.join(self.directory, files[0]))
+            img = self.cv2QPix(img).scaled(960, 540)
+            self.ui.load_pages.og_pic.setPixmap(img) # 这里的og_pic是显示图像的窗口的名字
+
+        # 修复单帧文件的按钮操作，按下按钮后对于选中文件夹的第5张图片进行修复，并进行显示
+        if btn_name == "fix_single":
+            saving_dir = QFileDialog.getExistingDirectory(None,"选取文件夹","H:/")
+            og_dir = self.directory
+            file_saving = fix_single(og_dir, saving_dir)
+            img = cv2.imread(file_saving)
+            img = self.cv2QPix(img).scaled(960, 540)
+            self.ui.load_pages.fix_pic.setPixmap(img)
+
+            
 
 # SETTINGS WHEN TO START
 # Set the initial class and also additional parameters of the "QApplication" class

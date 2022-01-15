@@ -168,6 +168,7 @@ class SetupMainWindow:
         # SET SIGNALS
         self.ui.left_menu.clicked.connect(self.btn_clicked)
         self.ui.left_menu.released.connect(self.btn_released)
+        self.ui.load_pages.select_dir.clicked.connect(self.btn_clicked)
 
         # TITLE BAR / ADD EXTRA BUTTONS
         # ///////////////////////////////////////////////////////////////
@@ -232,8 +233,9 @@ class SetupMainWindow:
         # ///////////////////////////////////////////////////////////////
 
         # BTN 1
-        
-
+        # 在这里声明按钮
+        self.ui.load_pages.select_dir.clicked.connect(lambda: self.pages_btn_clicked("select_dir"))
+        self.ui.load_pages.select_dir.clicked.connect(lambda: self.pages_btn_clicked("fix_single"))
         # ///////////////////////////////////////////////////////////////
         # END - EXAMPLE CUSTOM WIDGETS
         # ///////////////////////////////////////////////////////////////
