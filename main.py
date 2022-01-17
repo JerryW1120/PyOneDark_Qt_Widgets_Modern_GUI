@@ -44,7 +44,12 @@ from gui.widgets import *
 
 # 引入神经网络的模块
 # ///////////////////////////////////////////////////////////////
-from descratch import fix_single, fix_whole
+from descratch_westfilm.descratch import fix_single, fix_whole
+import torch.distributed as dist
+os.environ['MASTER_ADDR'] = 'localhost'
+os.environ['MASTER_PORT'] = '62237'
+dist.init_process_group(backend='gloo', init_method='env://',
+                                world_size=1, rank=0)
 
 # ADJUST QT FONT DPI FOR HIGHT SCALE AN 4K MONITOR
 # ///////////////////////////////////////////////////////////////
@@ -235,18 +240,20 @@ class MainWindow(QMainWindow):
     # cv 图片转换成 qt图片    
     def cv2QPix(self, img):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    
+
         qt_img = QImage(img.data,  # 数据源
                                 img.shape[1],  # 宽度
                                 img.shape[0],  # 高度
                                 img.shape[1] * 3,  # 行字节数
                                 QImage.Format_RGB888)
-        return QPixmap.fromImage(qt_img)
+        return QPixmap(qt_img)
 
     def pages_btn_clicked(self, btn_name):
         ''' 
             自定义按钮点击事件 
         '''
-
+        video_form = self.ui.load_pages.comboBox.currentText() # combobox这个名字后面要改一下
         '''1. 优化界面按钮事件 '''
        
         # //////////////////////////////////////////////////////////////////////////////
@@ -254,7 +261,7 @@ class MainWindow(QMainWindow):
 
         # 选取文件夹的按钮操作，按下按钮后可选择相应文件夹，然后指定显示被选中文件夹的第5张图片
         if btn_name == "select_dir":
-            self.directory = QFileDialog.getExistingDirectory(None,"选取文件夹","H:/")
+            self.directory = QFileDialog.getExistingDirectory(None,"选取文件夹","./")
             files = os.listdir(self.directory)
             files.sort()
             img = cv2.imread(os.path.join(self.directory, files[0]))
@@ -263,13 +270,19 @@ class MainWindow(QMainWindow):
 
         # 修复单帧文件的按钮操作，按下按钮后对于选中文件夹的第5张图片进行修复，并进行显示
         if btn_name == "fix_single":
-            saving_dir = QFileDialog.getExistingDirectory(None,"选取文件夹","H:/")
+           # saving_dir = QFileDialog.getExistingDirectory(None,"选取文件夹","./")
             og_dir = self.directory
-            file_saving = fix_single(og_dir, saving_dir)
-            img = cv2.imread(file_saving)
-            img = self.cv2QPix(img).scaled(960, 540)
+            file_saving = fix_single(og_dir, './')
+           # img = cv2.imread(file_saving)
+            img = self.cv2QPix(file_saving).scaled(960, 540)
             self.ui.load_pages.fix_pic.setPixmap(img)
 
+        if btn_name == "fix_whole":
+            saving_dir = QFileDialog.getExistingDirectory(None,"选取文件夹","./")
+            og_dir = self.directory
+            video_dir = fix_whole(og_dir, saving_dir, video_form)
+            # 进度条得在这里加循环，把descratch里的去掉，或者多线程、多进程
+            self.ui.load_pages.fix_pic.setText("修复完成！文件在%s" % video_dir)
             
 
 # SETTINGS WHEN TO START

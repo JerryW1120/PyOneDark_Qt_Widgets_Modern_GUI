@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main_pagesHSpAaG.ui'
+## Form generated from reading UI file 'main_pagesUdKrlh.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.2.2
 ##
@@ -37,14 +37,14 @@ class Ui_MainPages(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.og_pic = QLabel(self.page_1)
         self.og_pic.setObjectName(u"og_pic")
-        self.og_pic.setMaximumSize(QSize(480, 270))
+        self.og_pic.setMaximumSize(QSize(960, 540))
         self.og_pic.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_6.addWidget(self.og_pic)
 
         self.select_dir = QPushButton(self.page_1)
         self.select_dir.setObjectName(u"select_dir")
-        self.select_dir.setMaximumSize(QSize(480, 32))
+        self.select_dir.setMaximumSize(QSize(960, 32))
         self.select_dir.setLayoutDirection(Qt.LeftToRight)
 
         self.verticalLayout_6.addWidget(self.select_dir)
@@ -54,18 +54,18 @@ class Ui_MainPages(object):
 
         self.fix_single = QPushButton(self.page_1)
         self.fix_single.setObjectName(u"fix_single")
-        self.fix_single.setMaximumSize(QSize(140, 87))
+        self.fix_single.setMaximumSize(QSize(170, 87))
 
         self.horizontalLayout.addWidget(self.fix_single)
 
         self.verticalLayout_7 = QVBoxLayout()
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.label_2 = QLabel(self.page_1)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setMaximumSize(QSize(480, 270))
-        self.label_2.setAlignment(Qt.AlignCenter)
+        self.fix_pic = QLabel(self.page_1)
+        self.fix_pic.setObjectName(u"fix_pic")
+        self.fix_pic.setMaximumSize(QSize(960, 540))
+        self.fix_pic.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_7.addWidget(self.label_2)
+        self.verticalLayout_7.addWidget(self.fix_pic)
 
 
         self.horizontalLayout.addLayout(self.verticalLayout_7)
@@ -75,10 +75,10 @@ class Ui_MainPages(object):
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.pushButton_2 = QPushButton(self.page_1)
-        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.fix_whole = QPushButton(self.page_1)
+        self.fix_whole.setObjectName(u"fix_whole")
 
-        self.horizontalLayout_2.addWidget(self.pushButton_2)
+        self.horizontalLayout_2.addWidget(self.fix_whole)
 
         self.comboBox = QComboBox(self.page_1)
         self.comboBox.addItem("")
@@ -93,11 +93,11 @@ class Ui_MainPages(object):
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.label_3 = QLabel(self.page_1)
-        self.label_3.setObjectName(u"label_3")
-        self.label_3.setAlignment(Qt.AlignCenter)
+        self.progress = QLabel(self.page_1)
+        self.progress.setObjectName(u"progress")
+        self.progress.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_3.addWidget(self.label_3)
+        self.horizontalLayout_3.addWidget(self.progress)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
@@ -151,13 +151,13 @@ class Ui_MainPages(object):
         self.og_pic.setText(QCoreApplication.translate("MainPages", u"\u539f\u59cb\u753b\u9762\uff08\u56fe\u50cf/\u89c6\u9891\uff09", None))
         self.select_dir.setText(QCoreApplication.translate("MainPages", u"\u9009\u62e9\u6587\u4ef6", None))
         self.fix_single.setText(QCoreApplication.translate("MainPages", u"\u9884\u89c8\u4fee\u590d/\u5355\u5e27\u4fee\u590d", None))
-        self.label_2.setText(QCoreApplication.translate("MainPages", u"\u4fee\u590d\u753b\u9762\uff08\u56fe\u50cf/\u89c6\u9891\uff09", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainPages", u"\u6b63\u5f0f\u4fee\u590d", None))
+        self.fix_pic.setText(QCoreApplication.translate("MainPages", u"\u4fee\u590d\u753b\u9762\uff08\u56fe\u50cf/\u89c6\u9891\uff09", None))
+        self.fix_whole.setText(QCoreApplication.translate("MainPages", u"\u6b63\u5f0f\u4fee\u590d", None))
         self.comboBox.setItemText(0, QCoreApplication.translate("MainPages", u"MP4", None))
         self.comboBox.setItemText(1, QCoreApplication.translate("MainPages", u"MOV", None))
         self.comboBox.setItemText(2, QCoreApplication.translate("MainPages", u"MXF", None))
 
-        self.label_3.setText(QCoreApplication.translate("MainPages", u"\u8fdb\u5ea6\u6761", None))
+        self.progress.setText(QCoreApplication.translate("MainPages", u"\u8fdb\u5ea6\u6761", None))
         self.empty_page_label.setText(QCoreApplication.translate("MainPages", u"Empty Page", None))
     # retranslateUi
 

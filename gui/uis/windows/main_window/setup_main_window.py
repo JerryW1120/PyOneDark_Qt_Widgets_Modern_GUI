@@ -235,7 +235,8 @@ class SetupMainWindow:
         # BTN 1
         # 在这里声明按钮
         self.ui.load_pages.select_dir.clicked.connect(lambda: self.pages_btn_clicked("select_dir"))
-        self.ui.load_pages.select_dir.clicked.connect(lambda: self.pages_btn_clicked("fix_single"))
+        self.ui.load_pages.fix_single.clicked.connect(lambda: self.pages_btn_clicked("fix_single"))
+        self.ui.load_pages.fix_whole.clicked.connect(lambda: self.pages_btn_clicked("fix_whole"))
         # ///////////////////////////////////////////////////////////////
         # END - EXAMPLE CUSTOM WIDGETS
         # ///////////////////////////////////////////////////////////////
