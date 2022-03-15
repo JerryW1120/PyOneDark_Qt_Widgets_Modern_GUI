@@ -22,11 +22,12 @@ from gui.uis.windows.main_window.functions_main_window import *
 import sys
 import os
 import cv2
-
+import time
 
 # IMPORT QT CORE
 # ///////////////////////////////////////////////////////////////
 from qt_core import *
+from PySide6.QtCore import Signal
 
 # IMPORT SETTINGS
 # ///////////////////////////////////////////////////////////////
@@ -40,6 +41,8 @@ from gui.uis.windows.main_window import *
 # IMPORT PY ONE DARK WIDGETS
 # ///////////////////////////////////////////////////////////////
 from gui.widgets import *
+
+from video_play import player
 
 
 # 引入神经网络的模块
@@ -55,6 +58,47 @@ dist.init_process_group(backend='gloo', init_method='env://',
 # ///////////////////////////////////////////////////////////////
 os.environ["QT_FONT_DPI"] = "96"
 # IF IS 4K MONITOR ENABLE 'os.environ["QT_SCALE_FACTOR"] = "2"'
+
+
+class Thread(QThread):
+    '''
+    多线程尝试
+    '''
+    _signal = Signal(int) #定义信号类型为整型
+    def __init__(self):
+        super(Thread, self).__init__()
+    def __del__(self):
+        self.wait()
+    def run(self):
+        for i in range(100):
+            time.sleep(0.1)
+            self._signal.emit(i)  #发射信号
+
+
+class ProgressBar(QWidget):
+    def __init__(self):
+        super(ProgressBar, self).__init__()
+        self.setWindowTitle('修复进度')
+        self.btn = QPushButton('启动')
+        self.btn.clicked.connect(self.btnFunc) #连接槽函数
+        self.pbar = QProgressBar(self)
+        self.pbar.setValue(0)
+        self.resize(300, 300)
+        self.vbox = QVBoxLayout()
+        self.vbox.addWidget(self.pbar)
+        self.vbox.addWidget(self.btn)
+        self.setLayout(self.vbox)
+        self.show()
+    def btnFunc(self):
+        self.thread = Thread() #实例化线程
+        self.thread._signal.connect(self.signal_accept) #将线程累中定义的信号连接到本类中的信号接收函数中
+        self.thread.start() #启动线程，启动线程直接调用线程中的start方法，这个方法会调用run函数，所以不用调用run函数
+        self.btn.setEnabled(False)
+    def signal_accept(self, msg):
+        self.pbar.setValue(int(msg))  # 将线程的参数传入进度条
+        if self.pbar.value() == 99:
+            self.pbar.setValue(0)
+            self.btn.setEnabled(True)
 
 # MAIN WINDOW
 # ///////////////////////////////////////////////////////////////
@@ -78,6 +122,7 @@ class MainWindow(QMainWindow):
         self.hide_grips = True # Show/Hide resize grips
         SetupMainWindow.setup_gui(self)
         self.directory = ''
+        self.saving_dir = ''
 
         # SHOW MAIN WINDOW
         # ///////////////////////////////////////////////////////////////
@@ -278,11 +323,17 @@ class MainWindow(QMainWindow):
             self.ui.load_pages.fix_pic.setPixmap(img)
 
         if btn_name == "fix_whole":
-            saving_dir = QFileDialog.getExistingDirectory(None,"选取文件夹","./")
+
             og_dir = self.directory
-            video_dir = fix_whole(og_dir, saving_dir, video_form)
+            if self.saving_dir != '':
+                video_dir = fix_whole(og_dir, self.saving_dir, video_form)
             # 进度条得在这里加循环，把descratch里的去掉，或者多线程、多进程
-            self.ui.load_pages.fix_pic.setText("修复完成！文件在%s" % video_dir)
+                self.ui.load_pages.fix_pic.setText("修复完成！文件在%s" % video_dir)
+            else:
+                self.ui.load_pages.fix_pic.setText("未选择存储路径！请先选择存储路径")
+
+        if btn_name == "select_output_dir":
+            self.saving_dir = QFileDialog.getExistingDirectory(None,"选取储存地址","./")
             
 
 # SETTINGS WHEN TO START
